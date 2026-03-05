@@ -67,7 +67,8 @@ def extract_drive_file_id(link):
 
 def make_drive_direct_link(file_id):
     """Convert FILE_ID to a direct Google Drive view/embed link."""
-    return f'https://drive.google.com/uc?export=view&id={file_id}'
+    # Changed to return the 'view' format instead of 'uc?export=view'
+    return f'https://drive.google.com/file/d/{file_id}/view'
 
 
 def normalize_youtube_url(url):

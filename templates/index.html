@@ -456,7 +456,7 @@
                 {% for img in images %}
                 <div class="media-item">
                     <a href="{{ img.drive_link }}" target="_blank">
-                        <img src="{{ img.drive_link | replace('uc?export=view&', 'thumbnail?') }}&sz=w1000"
+                        <img src="{{ img.drive_link | replace('file/d/', 'thumbnail?id=') | replace('/view', '') }}&sz=w1000"
                             alt="{{ img.title }}" class="media-preview" loading="lazy">
                     </a>
                     <div class="media-info">

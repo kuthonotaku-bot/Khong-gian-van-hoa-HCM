@@ -100,12 +100,24 @@ def login_required(f):
 @app.route('/')
 def index():
     with get_db() as conn:
-        images = conn.execute(
+        images_rows = conn.execute(
             "SELECT title, drive_link FROM resources WHERE type='image' ORDER BY created_at DESC"
         ).fetchall()
-        docs = conn.execute(
+        docs_rows = conn.execute(
             "SELECT title, drive_link FROM resources WHERE type='document' ORDER BY created_at DESC"
         ).fetchall()
+    
+    # Chuẩn hóa link Drive khi hiển thị để sửa các lỗi 404 cũ (chỉ áp dụng cho ảnh)
+    images = []
+    for r in images_rows:
+        fid = extract_drive_file_id(r['drive_link'])
+        images.append({'title': r['title'], 'drive_link': make_drive_direct_link(fid) if fid else r['drive_link']})
+        
+    # Tài liệu giữ nguyên link gốc
+    docs = []
+    for r in docs_rows:
+        docs.append({'title': r['title'], 'drive_link': r['drive_link']})
+        
     return render_template('index.html', images=images, docs=docs)
 
 
@@ -172,12 +184,8 @@ def add_document_link():
     if not link:
         return jsonify({'error': 'Vui lòng nhập link Google Drive'}), 400
 
-    file_id = extract_drive_file_id(link)
-    if not file_id:
-        return jsonify({'error': 'Không thể trích xuất File ID từ link. Vui lòng dùng link "Share" của Google Drive.'}), 400
-
-    # For documents, we use the direct view link now
-    drive_link = make_drive_direct_link(file_id)
+    # For documents, we now just use the exact link the user provided
+    drive_link = link
 
     with get_db() as conn:
         cursor = conn.execute(
@@ -197,7 +205,16 @@ def get_resources():
             "SELECT id, title, type, drive_link FROM resources ORDER BY created_at DESC"
         ).fetchall()
     
-    result = [dict(row) for row in rows]
+    result = []
+    for row in rows:
+        d = dict(row)
+        # Only format links for images, keep document links raw
+        if d['type'] == 'image':
+            fid = extract_drive_file_id(d['drive_link'])
+            if fid:
+                d['drive_link'] = make_drive_direct_link(fid)
+        result.append(d)
+        
     return jsonify(result), 200
 
 

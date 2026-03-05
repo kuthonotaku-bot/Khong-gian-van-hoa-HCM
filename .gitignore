@@ -1,0 +1,20 @@
+# Flask
+instance/
+.webassets-cache
+.env
+__pycache__/
+*.pyc
+
+# Database
+database.db
+
+# Old Storage (deprecated)
+questions.txt
+videos.txt
+static/Pictures/
+static/Documents/
+website.py
+
+# OS
+.DS_Store
+Thumbs.db

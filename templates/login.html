@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Quản trị Không gian Văn hóa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #A01D1D;
+            --secondary: #D4AF37;
+            --bg-light: #F8F9FA;
+            --text-dark: #212529;
+            --white: #FFFFFF;
+            --danger: #dc3545;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, #6b1212 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark);
+        }
+
+        .login-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .login-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .login-icon i {
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .login-card h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .login-card p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-login:hover {
+            background: #801616;
+        }
+
+        .error-msg {
+            background: #fff0f0;
+            border: 1px solid #ffcccc;
+            color: var(--danger);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-card">
+        <div class="login-icon">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <h1>Quản trị viên</h1>
+        <p>Không gian Văn hóa Hồ Chí Minh</p>
+
+        {% if error %}
+        <div class="error-msg"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="/login">
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Mật khẩu</label>
+                <input type="password" id="password" name="password" placeholder="Nhập mật khẩu..." required autofocus>
+            </div>
+            <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
+        </form>
+
+        <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Quay về trang chủ</a>
+    </div>
+</body>
+
+</html>

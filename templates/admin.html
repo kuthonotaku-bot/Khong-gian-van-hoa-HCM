@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Quản trị Không gian Văn hóa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #A01D1D;
+            --secondary: #D4AF37;
+            --bg-light: #F8F9FA;
+            --text-dark: #212529;
+            --white: #FFFFFF;
+            --success: #28a745;
+            --danger: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .btn-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="file"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #801616;
+        }
+
+        button.add-btn {
+            background: var(--secondary);
+            color: #333;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #333;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        #toast.success {
+            border-left: 5px solid var(--success);
+        }
+
+        #toast.error {
+            border-left: 5px solid var(--danger);
+        }
+
+        /* Quiz Builder */
+        .q-box {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+
+        .opt-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="admin-header">
+        <h1><i class="fas fa-shield-alt"></i> Bảng điều khiển Quản trị</h1>
+        <div style="display:flex; gap:20px; align-items:center;">
+            <a href="/" class="btn-link"><i class="fas fa-home"></i> Xem Trang chủ</a>
+            <a href="/logout" class="btn-link" style="opacity:0.8;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Add Image Link -->
+        <div class="card">
+            <h2><i class="fas fa-image"></i> Thêm Hình ảnh (Google Drive)</h2>
+            <form id="img-form">
+                <div class="form-group">
+                    <label>Tiêu đề hình ảnh:</label>
+                    <input type="text" id="img-title" placeholder="VD: Lễ kỷ niệm ngày thành lập...">
+                </div>
+                <div class="form-group">
+                    <label>Link Google Drive (link Share):</label>
+                    <input type="text" id="img-link" placeholder="https://drive.google.com/file/d/.../view?usp=sharing"
+                        required>
+                </div>
+                <button type="submit"><i class="fas fa-plus-circle"></i> Thêm Hình ảnh</button>
+            </form>
+            <div id="img-status" style="margin-top: 10px; font-weight: 600;"></div>
+        </div>
+
+        <!-- Add Document Link -->
+        <div class="card">
+            <h2><i class="fas fa-file-pdf"></i> Thêm Tài liệu (Google Drive)</h2>
+            <form id="doc-form">
+                <div class="form-group">
+                    <label>Tên tài liệu:</label>
+                    <input type="text" id="doc-title" placeholder="VD: Nghị quyết số 12/NQ-TW...">
+                </div>
+                <div class="form-group">
+                    <label>Link Google Drive (link Share):</label>
+                    <input type="text" id="doc-link" placeholder="https://drive.google.com/file/d/.../view?usp=sharing"
+                        required>
+                </div>
+                <button type="submit"><i class="fas fa-plus-circle"></i> Thêm Tài liệu</button>
+            </form>
+            <div id="doc-status" style="margin-top: 10px; font-weight: 600;"></div>
+        </div>
+
+        <!-- Quiz Builder -->
+        <div class="card">
+            <h2><i class="fas fa-tasks"></i> Quản lý Câu hỏi Tự kiểm tra</h2>
+            <div id="quiz-builder">
+                <!-- Javascript will render here -->
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="add-btn" type="button" onclick="addQuestion()"><i class="fas fa-plus"></i> Thêm câu
+                    hỏi</button>
+                <button type="button" onclick="saveQuestions()"><i class="fas fa-save"></i> Lưu toàn bộ câu hỏi</button>
+            </div>
+        </div>
+
+        <!-- Video Builder -->
+        <div class="card">
+            <h2><i class="fab fa-youtube" style="color:red"></i> Quản lý Tư liệu Video (YouTube)</h2>
+            <div id="video-builder">
+                <!-- Javascript will render here -->
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="add-btn" type="button" onclick="addVideo()"><i class="fas fa-plus"></i> Thêm Link
+                    Video</button>
+                <button type="button" onclick="saveVideos()"><i class="fas fa-save"></i> Lưu danh sách Video</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        // --- Utilities ---
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.className = type;
+            toast.style.display = 'flex';
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> <span>${message}</span>`;
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+
+        async function addLink(linkInputId, titleInputId, endpoint, statusId) {
+            const linkInput = document.getElementById(linkInputId);
+            const titleInput = document.getElementById(titleInputId);
+            const statusEl = document.getElementById(statusId);
+
+            const link = linkInput.value.trim();
+            const title = titleInput ? titleInput.value.trim() : '';
+
+            if (!link) {
+                showToast('Vui lòng nhập link Google Drive', 'error');
+                return;
+            }
+
+            try {
+                statusEl.innerText = 'Đang xử lý...';
+                statusEl.style.color = 'blue';
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ link, title })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast('Đã thêm thành công!');
+                    statusEl.innerText = 'Thành công! Link đã được lưu vào hệ thống.';
+                    statusEl.style.color = 'green';
+                    linkInput.value = '';
+                    if (titleInput) titleInput.value = '';
+                } else {
+                    showToast(data.error || 'Lỗi xử lý', 'error');
+                    statusEl.innerText = `Lỗi: ${data.error}`;
+                    statusEl.style.color = 'red';
+                }
+            } catch (err) {
+                showToast('Lỗi kết nối server', 'error');
+                statusEl.innerText = 'Lỗi kết nối!';
+                statusEl.style.color = 'red';
+            }
+        }
+
+        // --- Event Listeners ---
+        document.getElementById('img-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            addLink('img-link', 'img-title', '/add-image-link', 'img-status');
+        });
+
+        document.getElementById('doc-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            addLink('doc-link', 'doc-title', '/add-document-link', 'doc-status');
+        });
+
+        // --- Quiz System ---
+        let questions = [];
+
+        async function loadQuestions() {
+            try {
+                const res = await fetch('/get-questions');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    questions = data;
+                }
+            } catch (e) {
+                console.error("No questions found or error loading");
+            }
+            renderBuilder();
+        }
+
+        function renderBuilder() {
+            const container = document.getElementById('quiz-builder');
+            if (questions.length === 0) {
+                container.innerHTML = '<p style="color:#666; font-style:italic;">Chưa có câu hỏi nào. Bấm thêm để bắt đầu.</p>';
+                return;
+            }
+
+            container.innerHTML = questions.map((q, idx) => `
+                <div class="q-box">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <strong>Câu hỏi ${idx + 1}</strong>
+                        <button type="button" style="background:var(--danger); padding: 5px 10px; font-size: 0.8rem;" onclick="removeQuestion(${idx})"><i class="fas fa-trash"></i> Xóa</button>
+                    </div>
+                    <input type="text" placeholder="Nhập nội dung câu hỏi..." value="${q.q}" onchange="updateQ(${idx}, this.value)">
+                    <div style="margin-top: 15px;">
+                        ${q.options.map((opt, oIdx) => `
+                            <div class="opt-row">
+                                <input type="radio" name="corr-${idx}" ${q.correct == oIdx ? 'checked' : ''} onclick="updateCorr(${idx}, ${oIdx})">
+                                <input type="text" placeholder="Đáp án ${oIdx + 1}" value="${opt}" onchange="updateOpt(${idx}, ${oIdx}, this.value)">
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.addQuestion = function () {
+            if (questions.length >= 10) {
+                showToast('Tối đa 10 câu hỏi', 'error');
+                return;
+            }
+            questions.push({
+                q: '',
+                options: ['', '', '', ''],
+                correct: 0
+            });
+            renderBuilder();
+        };
+
+        window.removeQuestion = function (idx) {
+            questions.splice(idx, 1);
+            renderBuilder();
+        };
+
+        window.updateQ = function (idx, val) { questions[idx].q = val; };
+        window.updateOpt = function (idx, oIdx, val) { questions[idx].options[oIdx] = val; };
+        window.updateCorr = function (idx, val) { questions[idx].correct = val; };
+
+        window.saveQuestions = async function () {
+            try {
+                const res = await fetch('/save-questions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(questions)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showToast('Đã lưu hệ thống câu hỏi thành công!');
+                } else {
+                    showToast('Lỗi khi lưu', 'error');
+                }
+            } catch (err) {
+                showToast('Lỗi kết nối server', 'error');
+            }
+        };
+
+        // --- Video System ---
+        let videos = [];
+
+        async function loadVideos() {
+            try {
+                const res = await fetch('/get-videos');
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    videos = data;
+                }
+            } catch (e) {
+                console.error("No videos found or error loading");
+            }
+            renderVideoBuilder();
+        }
+
+        function renderVideoBuilder() {
+            const container = document.getElementById('video-builder');
+            if (videos.length === 0) {
+                container.innerHTML = '<p style="color:#666; font-style:italic;">Chưa có video nào. Bấm thêm để bắt đầu.</p>';
+                return;
+            }
+
+            container.innerHTML = videos.map((v, idx) => `
+                <div class="q-box">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <strong>Video ${idx + 1}</strong>
+                        <button type="button" style="background:var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;" onclick="removeVideo(${idx})"><i class="fas fa-trash"></i> Xóa</button>
+                    </div>
+                    <input type="text" placeholder="Nhập link YouTube (VD: https://www.youtube.com/watch?v=...)" value="${v.url}" onchange="updateVideoUrl(${idx}, this.value)">
+                </div>
+            `).join('');
+        }
+
+        window.addVideo = function () {
+            videos.push({ url: '' });
+            renderVideoBuilder();
+        };
+
+        window.removeVideo = function (idx) {
+            videos.splice(idx, 1);
+            renderVideoBuilder();
+        };
+
+        window.updateVideoUrl = function (idx, val) {
+            videos[idx].url = val;
+        };
+
+        window.saveVideos = async function () {
+            try {
+                const res = await fetch('/save-videos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(videos)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showToast('Đã lưu danh sách Video thành công!');
+                } else {
+                    showToast('Lỗi khi lưu', 'error');
+                }
+            } catch (err) {
+                showToast('Lỗi kết nối server', 'error');
+            }
+        };
+
+        // Initialize
+        loadQuestions();
+        loadVideos();
+
+    </script>
+</body>
+
+</html>

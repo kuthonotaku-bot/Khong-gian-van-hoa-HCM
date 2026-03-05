@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Không gian Văn hóa Hồ Chí Minh - Gắn với Văn hóa Công vụ</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary: #A01D1D;
+            --secondary: #D4AF37;
+            --accent: #E5C35E;
+            --white: #FFFFFF;
+            --bg-light: #F8F9FA;
+            --text-dark: #212529;
+            --text-muted: #6C757D;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --danger: #dc3545;
+            --success: #28a745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            height: 550px;
+            background: linear-gradient(rgba(160, 29, 29, 0.45), rgba(160, 29, 29, 0.45)), url('static/Pictures/Bac_Ho.jpg');
+            background-size: cover;
+            background-position: top center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        /* Using inline styles in header for robust local fallback */
+        .header.fallback-bg {
+            background: linear-gradient(rgba(160, 29, 29, 0.8), rgba(160, 29, 29, 0.8));
+        }
+
+        .header-content {
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .header .org-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            color: var(--white);
+            text-transform: uppercase;
+        }
+
+        .header .sub-org-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: var(--secondary);
+            text-transform: uppercase;
+        }
+
+        .header .divider {
+            width: 60px;
+            height: 3px;
+            background: var(--secondary);
+            margin: 15px auto;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin: 15px 0 10px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+        }
+
+        .header p {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .header-portrait {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--secondary);
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Nav */
+        .nav {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-item a {
+            display: block;
+            padding: 20px 25px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: var(--transition);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .nav-item a:hover {
+            color: var(--primary);
+        }
+
+        /* Forms & Buttons */
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            background: #801616;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(160, 29, 29, 0.3);
+        }
+
+        /* Cards & Grid */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .qr-container {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .qr-code img {
+            width: 110px;
+            height: 110px;
+        }
+
+        /* Media Gallery */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .media-item {
+            position: relative;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .media-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .media-preview:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .media-info {
+            padding: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Quiz Styles */
+        .form-section {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin: 0 auto;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-item {
+            padding: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-item:hover {
+            border-color: var(--primary);
+            background: rgba(160, 29, 29, 0.05);
+        }
+
+        .option-item.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .nav-container {
+                flex-wrap: wrap;
+            }
+
+            .nav-item a {
+                padding: 10px 15px;
+            }
+
+            .quiz-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header" id="main-header">
+        <div class="header-content">
+            <img src="static/Pictures/Bua_liem.jpg" alt="Búa Liềm" class="header-portrait">
+            <div class="org-title">ĐẢNG BỘ SỞ XÂY DỰNG THÀNH PHỐ HỒ CHÍ MINH</div>
+            <div class="sub-org-title">CHI BỘ CÔNG TY DỊCH VỤ BẾN XE</div>
+            <div class="divider"></div>
+            <h1>KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH</h1>
+            <p>Gắn với Văn hóa công vụ</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <ul class="nav-container container">
+            <li class="nav-item"><a href="#introduction">Giới thiệu</a></li>
+            <li class="nav-item"><a href="#documents">Tài liệu</a></li>
+            <li class="nav-item"><a href="#pictures">Hình ảnh minh chứng</a></li>
+            <li class="nav-item"><a href="#videos">Tư liệu video</a></li>
+            <li class="nav-item"><a href="#test">Tự kiểm tra</a></li>
+        </ul>
+    </nav>
+
+    <!-- Introduction Section -->
+    <section id="introduction" class="section">
+        <div class="container text-center">
+            <div class="section-title">
+                <h2>Giới thiệu mô hình</h2>
+            </div>
+            <div class="grid-3">
+                <div class="card intro-card">
+                    <i class="fas fa-bullseye"
+                        style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;"></i>
+                    <h3 style="color: var(--primary); margin-bottom:15px;">Mục tiêu</h3>
+                    <p>Xây dựng môi trường văn hóa công vụ hiện đại, lấy tư tưởng, đạo đức, phong cách Hồ Chí Minh làm
+                        nền tảng cốt lõi trong mọi hoạt động của đơn vị.</p>
+                </div>
+                <div class="card intro-card">
+                    <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;"></i>
+                    <h3 style="color: var(--primary); margin-bottom:15px;">Ý nghĩa</h3>
+                    <p>Nâng cao niềm tự hào, tinh thần trách nhiệm và đạo đức công vụ của mỗi cán bộ, công chức, viên
+                        chức trong quá trình phục vụ nhân dân.</p>
+                </div>
+                <div class="card intro-card">
+                    <i class="fas fa-lightbulb"
+                        style="font-size: 2.5rem; color: var(--primary); margin-bottom: 20px;"></i>
+                    <h3 style="color: var(--primary); margin-bottom:15px;">Sáng tạo</h3>
+                    <p>Khơi dậy tinh thần tự học, đổi mới sáng tạo, thực hiện tốt công tác chuyên môn theo đúng di huấn
+                        của Người.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documents Section -->
+    <section id="documents" class="section" style="background-color: #f1f1f1;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tài liệu học tập</h2>
+            </div>
+
+            {% if docs %}
+            <div class="grid-3">
+                {% for doc in docs %}
+                <div class="card doc-card">
+                    <div style="display:flex; align-items:center; gap:15px; margin-bottom:15px;">
+                        <i class="fas fa-file-alt" style="font-size:2rem; color:var(--primary);"></i>
+                        <div style="overflow:hidden;">
+                            <div style="font-weight:700; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;"
+                                title="{{ doc.title }}">{{ doc.title }}</div>
+                            <a href="{{ doc.drive_link }}" target="_blank"
+                                style="font-size:0.8rem; color:var(--primary); text-decoration: none;">Tải xuống /
+                                Xem</a>
+                        </div>
+                    </div>
+                    <div class="qr-container">
+                        <div id="qr-doc-{{ loop.index }}" class="qr-code" data-url="{{ doc.drive_link }}"></div>
+                        <span style="font-size:0.7rem; color:var(--text-muted);">Quét để tải tài liệu</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-center" style="text-align: center; color: var(--text-muted); font-style: italic;">Chưa có tài
+                liệu nào được đăng tải.</p>
+            {% endif %}
+
+        </div>
+    </section>
+
+    <!-- Pictures Section -->
+    <section id="pictures" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Lưu trữ hình ảnh</h2>
+            </div>
+
+            {% if images %}
+            <div class="media-grid">
+                {% for img in images %}
+                <div class="media-item">
+                    <a href="{{ img.drive_link }}" target="_blank">
+                        <img src="{{ img.drive_link | replace('uc?export=view&', 'thumbnail?') }}&sz=w1000"
+                            alt="{{ img.title }}" class="media-preview" loading="lazy">
+                    </a>
+                    <div class="media-info">
+                        <div class="qr-container">
+                            <div id="qr-img-{{ loop.index }}" class="qr-code" data-url="{{ img.drive_link }}"></div>
+                            <span style="font-size:0.7rem; color:var(--text-muted);">Quét để xem hình ảnh</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-center" style="text-align: center; color: var(--text-muted); font-style: italic;">Chưa có
+                hình ảnh nào được đăng tải.</p>
+            {% endif %}
+
+        </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section id="videos" class="section" style="background-color: #f9f9f9;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tư liệu Video</h2>
+            </div>
+            <div id="video-grid-container" class="grid-3">
+                <p class="text-center"
+                    style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); font-style: italic;">Đang
+                    tải dữ liệu...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Section -->
+    <section id="test" class="section" style="background-color: #EEE;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tự kiểm tra kiến thức</h2>
+            </div>
+            <div id="quiz-container" class="form-section container" style="max-width: 800px;">
+                <p class="text-center text-muted" style="text-align: center;">Đang tải câu hỏi...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" style="padding: 60px 0 20px; background: var(--primary); color: white; text-align: center;">
+        <div class="container">
+            <h3>CÔNG TY DỊCH VỤ BẾN XE</h3>
+            <p style="margin: 20px 0;">ĐỊA CHỈ : 192 NAM KỲ KHỞI NGHĨA, PHƯỜNG VŨNG TÀU, TP.HỒ CHÍ MINH</p>
+            <div
+                style="padding-top: 20px; margin-top:20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; opacity: 0.8;">
+                @2026 KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('.nav-item a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navHeight = document.querySelector('.nav').offsetHeight;
+                    window.scrollTo({
+                        top: targetElement.offsetTop - navHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Generate QR Codes
+        document.addEventListener('DOMContentLoaded', () => {
+            const qrElements = document.querySelectorAll('.qr-code');
+            qrElements.forEach(el => {
+                const url = el.getAttribute('data-url');
+                if (url) {
+                    new QRCode(el, {
+                        text: encodeURI(url),
+                        width: 110,
+                        height: 110
+                    });
+                }
+            });
+
+            // Fallback for banner image if 404
+            const header = document.getElementById('main-header');
+            const bgImg = new Image();
+            bgImg.src = '/static/Pictures/Bac_Ho.jpg';
+            bgImg.onerror = function () {
+                header.classList.add('fallback-bg');
+            };
+
+            // Fetch questions
+            fetchQuiz();
+
+            // Fetch videos
+            fetchVideos();
+        });
+
+        // --- Video Logic ---
+        async function fetchVideos() {
+            try {
+                const response = await fetch('/get-videos');
+                const data = await response.json();
+                renderVideos(data || []);
+            } catch (error) {
+                console.error("Lỗi tải video");
+            }
+        }
+
+        function extractVideoID(url) {
+            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[7].length == 11) ? match[7] : false;
+        }
+
+        function renderVideos(videos) {
+            const container = document.getElementById('video-grid-container');
+            if (videos.length === 0) {
+                container.innerHTML = '<p class="text-center" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); font-style: italic;">Chưa có video nào được đăng tải.</p>';
+                return;
+            }
+
+            container.innerHTML = videos.map((v, idx) => {
+                const vid = extractVideoID(v.url);
+                const thumb = vid ? `https://img.youtube.com/vi/${vid}/hqdefault.jpg` : '';
+                return `
+                <div class="card doc-card" style="display:flex; flex-direction:column; align-items:center;">
+                    <a href="${v.url}" target="_blank" style="width:100%; position:relative;">
+                        <img src="${thumb}" alt="Video Thumbnail" style="width:100%; border-radius:8px; object-fit:cover; aspect-ratio:16/9; background:#eee;">
+                        <i class="fab fa-youtube" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:red; font-size:3rem; text-shadow:0 2px 10px rgba(0,0,0,0.5);"></i>
+                    </a>
+                    <div class="qr-container" style="margin-top:15px; width: 100%;">
+                        <div id="qr-vid-${idx}" class="qr-code" data-url="${v.url}"></div>
+                        <span style="font-size:0.7rem; color:var(--text-muted); text-align:center; display:block; margin-top:5px;">Quét để xem Video</span>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            // Generate QR codes for the new elements
+            videos.forEach((v, idx) => {
+                const el = document.getElementById(`qr-vid-${idx}`);
+                if (el && v.url) {
+                    new QRCode(el, {
+                        text: encodeURI(v.url),
+                        width: 110,
+                        height: 110
+                    });
+                }
+            });
+        }
+
+        // Quiz Logic
+        let quizData = [];
+        let userAnswers = [];
+
+        async function fetchQuiz() {
+            try {
+                const response = await fetch('/get-questions');
+                const data = await response.json();
+                quizData = data || [];
+                renderQuiz();
+            } catch (error) {
+                document.getElementById('quiz-container').innerHTML =
+                    `<p style="text-align:center; color: var(--danger);">Không thể tải câu hỏi. Vui lòng thử lại sau.</p>`;
+            }
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            if (quizData.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color: var(--text-muted); font-style: italic;">Hiện tại chưa có bài kiểm tra nào được quản trị viên cấu hình.</p>`;
+                return;
+            }
+
+            userAnswers = new Array(quizData.length).fill(null);
+
+            container.innerHTML = `
+                <h3 style="text-align:center; margin-bottom:30px; color:var(--primary);">Hệ thống Tự kiểm tra</h3>
+                ${quizData.map((q, idx) => `
+                    <div class="quiz-question">
+                        <p><strong>Câu ${idx + 1}.</strong> ${q.q}</p>
+                        <div class="quiz-options">
+                            ${q.options.map((opt, oIdx) => `
+                                <div class="option-item" id="q${idx}-o${oIdx}" onclick="selectAnswer(${idx}, ${oIdx})">${opt}</div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('')}
+                <button class="btn-submit" onclick="submitQuiz()">Nộp bài</button>
+                <div id="quiz-result" style="margin-top:30px; text-align:center; display:none;"></div>
+            `;
+        }
+
+        window.selectAnswer = function (qIdx, oIdx) {
+            userAnswers[qIdx] = oIdx;
+            for (let i = 0; i < 4; i++) {
+                const el = document.getElementById(`q${qIdx}-o${i}`);
+                if (el) el.classList.remove('selected');
+            }
+            document.getElementById(`q${qIdx}-o${oIdx}`).classList.add('selected');
+        }
+
+        window.submitQuiz = function () {
+            if (userAnswers.includes(null)) {
+                alert('Vui lòng hoàn thành tất cả các câu hỏi trước khi nộp bài!');
+                return;
+            }
+
+            let score = 0;
+            quizData.forEach((q, idx) => {
+                // Correct index parsing ensures type safety
+                if (parseInt(userAnswers[idx]) === parseInt(q.correct)) score++;
+            });
+
+            const resultEl = document.getElementById('quiz-result');
+            resultEl.style.display = 'block';
+            resultEl.innerHTML = `
+                <div style="padding:20px; border-radius:10px; background:#f1f1f1; border: 2px solid var(--primary);">
+                    <h4 style="color:var(--primary); font-size:1.5rem; margin-bottom:10px;">Kết quả của bạn</h4>
+                    <p style="font-size:3rem; font-weight:800; margin:10px 0;">${score} / ${quizData.length}</p>
+                    <p>${score === quizData.length ? 'Xuất sắc! Bạn đã nắm vững kiến thức.' : 'Bạn hãy tiếp tục rèn luyện thêm nhé!'}</p>
+                    <button class="btn-submit" style="margin-top:15px; background:var(--secondary);" onclick="renderQuiz()">Làm lại</button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>

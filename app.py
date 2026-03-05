@@ -153,12 +153,13 @@ def add_image_link():
     drive_link = make_drive_direct_link(file_id)
 
     with get_db() as conn:
-        conn.execute(
+        cursor = conn.execute(
             "INSERT INTO resources (title, type, drive_link) VALUES (?, 'image', ?)",
             (title, drive_link)
         )
+        resource_id = cursor.lastrowid
 
-    return jsonify({'success': True, 'drive_link': drive_link}), 200
+    return jsonify({'success': True, 'id': resource_id, 'drive_link': drive_link}), 200
 
 
 @app.route('/add-document-link', methods=['POST'])
@@ -175,16 +176,40 @@ def add_document_link():
     if not file_id:
         return jsonify({'error': 'Không thể trích xuất File ID từ link. Vui lòng dùng link "Share" của Google Drive.'}), 400
 
-    # For documents, we use the direct download link
-    drive_link = f'https://drive.google.com/uc?export=download&id={file_id}'
+    # For documents, we use the direct view link now
+    drive_link = make_drive_direct_link(file_id)
 
     with get_db() as conn:
-        conn.execute(
+        cursor = conn.execute(
             "INSERT INTO resources (title, type, drive_link) VALUES (?, 'document', ?)",
             (title, drive_link)
         )
+        resource_id = cursor.lastrowid
 
-    return jsonify({'success': True, 'drive_link': drive_link}), 200
+    return jsonify({'success': True, 'id': resource_id, 'drive_link': drive_link}), 200
+
+
+@app.route('/get-resources', methods=['GET'])
+@login_required
+def get_resources():
+    with get_db() as conn:
+        rows = conn.execute(
+            "SELECT id, title, type, drive_link FROM resources ORDER BY created_at DESC"
+        ).fetchall()
+    
+    result = [dict(row) for row in rows]
+    return jsonify(result), 200
+
+
+@app.route('/delete-resource/<int:resource_id>', methods=['DELETE'])
+@login_required
+def delete_resource(resource_id):
+    try:
+        with get_db() as conn:
+            conn.execute("DELETE FROM resources WHERE id = ?", (resource_id,))
+        return jsonify({'success': True}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 # ─── Questions Routes ─────────────────────────────────────────────────────────

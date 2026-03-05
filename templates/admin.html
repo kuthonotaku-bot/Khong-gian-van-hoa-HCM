@@ -181,6 +181,13 @@
                 <button type="submit"><i class="fas fa-plus-circle"></i> Thêm Hình ảnh</button>
             </form>
             <div id="img-status" style="margin-top: 10px; font-weight: 600;"></div>
+
+            <div style="margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
+                <h3><i class="fas fa-list"></i> Danh sách Hình ảnh đã thêm</h3>
+                <div id="image-list">
+                    <!-- Javascript will render here -->
+                </div>
+            </div>
         </div>
 
         <!-- Add Document Link -->
@@ -199,6 +206,13 @@
                 <button type="submit"><i class="fas fa-plus-circle"></i> Thêm Tài liệu</button>
             </form>
             <div id="doc-status" style="margin-top: 10px; font-weight: 600;"></div>
+
+            <div style="margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
+                <h3><i class="fas fa-list"></i> Danh sách Tài liệu đã thêm</h3>
+                <div id="doc-list">
+                    <!-- Javascript will render here -->
+                </div>
+            </div>
         </div>
 
         <!-- Quiz Builder -->
@@ -272,6 +286,7 @@
                     statusEl.style.color = 'green';
                     linkInput.value = '';
                     if (titleInput) titleInput.value = '';
+                    loadResources(); // Tải lại danh sách
                 } else {
                     showToast(data.error || 'Lỗi xử lý', 'error');
                     statusEl.innerText = `Lỗi: ${data.error}`;
@@ -281,6 +296,52 @@
                 showToast('Lỗi kết nối server', 'error');
                 statusEl.innerText = 'Lỗi kết nối!';
                 statusEl.style.color = 'red';
+            }
+        }
+
+        async function loadResources() {
+            try {
+                const res = await fetch('/get-resources');
+                const data = await res.json();
+
+                const imageList = document.getElementById('image-list');
+                const docList = document.getElementById('doc-list');
+
+                const images = data.filter(r => r.type === 'image');
+                const docs = data.filter(r => r.type === 'document');
+
+                imageList.innerHTML = images.length ? images.map(img => `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee;">
+                        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%;">${img.title}</span>
+                        <button type="button" style="background:var(--danger); padding:5px 10px; font-size:0.8rem;" onclick="deleteResource(${img.id})"><i class="fas fa-trash"></i> Xóa</button>
+                    </div>
+                `).join('') : '<p style="color:#999; font-style:italic;">Chưa có hình ảnh nào.</p>';
+
+                docList.innerHTML = docs.length ? docs.map(doc => `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee;">
+                        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%;">${doc.title}</span>
+                        <button type="button" style="background:var(--danger); padding:5px 10px; font-size:0.8rem;" onclick="deleteResource(${doc.id})"><i class="fas fa-trash"></i> Xóa</button>
+                    </div>
+                `).join('') : '<p style="color:#999; font-style:italic;">Chưa có tài liệu nào.</p>';
+
+            } catch (err) {
+                console.error("Lỗi tải danh sách resources", err);
+            }
+        }
+
+        async function deleteResource(id) {
+            if (!confirm('Bạn có chắc chắn muốn xóa mục này?')) return;
+
+            try {
+                const res = await fetch(`/delete-resource/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('Đã xóa thành công!');
+                    loadResources();
+                } else {
+                    showToast('Lỗi khi xóa', 'error');
+                }
+            } catch (err) {
+                showToast('Lỗi kết nối server', 'error');
             }
         }
 
@@ -446,6 +507,7 @@
         // Initialize
         loadQuestions();
         loadVideos();
+        loadResources();
 
     </script>
 </body>

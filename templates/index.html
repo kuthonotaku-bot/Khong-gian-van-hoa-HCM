@@ -91,10 +91,6 @@
             overflow: hidden;
         }
 
-        /* Using inline styles in header for robust local fallback */
-        .header.fallback-bg {
-            background: linear-gradient(rgba(160, 29, 29, 0.8), rgba(160, 29, 29, 0.8));
-        }
 
         .header-content {
             z-index: 1;
@@ -549,13 +545,6 @@
                 }
             });
 
-            // Fallback for banner image if 404
-            const header = document.getElementById('main-header');
-            const bgImg = new Image();
-            bgImg.src = '/static/Pictures/Bac_Ho.jpg';
-            bgImg.onerror = function () {
-                header.classList.add('fallback-bg');
-            };
 
             // Fetch questions
             fetchQuiz();
